@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<project name="SparkLearn" default="build" basedir=".">
+  <description>SparkLearn builder</description>
+
+  <property name="src.dir"    location="src"/>
+  <property name="build.dir"  location="build"/>
+  <property name="pkg.dir"    location="pkg"/>
+  <property name="test.dir"   location="test"/>
+  <property name="vendor.dir" location="vendors"/>
+
+  <path id="classpath">
+    <pathelement location="${build.dir}" />
+    <fileset dir="${vendor.dir}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${build.dir}"/>
+  </target>
+
+  <target name="compile" depends="init" description="compile the source">
+    <javac includeantruntime="false"
+                      srcdir="${src.dir}"
+                     destdir="${build.dir}"
+                    encoding="utf-8">
+      <classpath refid="classpath"/>
+    </javac>
+  </target>
+
+  <target name="package" depends="compile" description="create packages">
+    <mkdir dir="${pkg.dir}"/>
+    <jar destfile="${pkg.dir}/sparklearn-${DSTAMP}.jar">
+      <fileset dir="${build.dir}" includes="**/*.class"/>
+      <manifest>
+        <attribute name="Main-Class" value="learn.SparkLearn"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="clobber" description="remove all artifact files">
+    <delete file="${build.dir}/**.class"/>
+  </target>
+
+  <target name="clean" depends="clobber" description="clean up" >
+    <delete dir="${build.dir}"/>
+    <delete dir="${pkg.dir}"/>
+  </target>
+
+  <target name="build" depends="compile" description="build project"/>
+
+</project>
