@@ -13,6 +13,8 @@ import java.util.regex.PatternSyntaxException;
 
 public class SparkLearn {
 
+  private static final Map<String, Object> settings = new HashMap<String, Object>();
+
   public static String parse(String pattern, String text, Map<String, Object> locals) {
     Matcher regexp = Pattern.compile(pattern).matcher(text);
     while (regexp.find()) {
@@ -51,6 +53,14 @@ public class SparkLearn {
     return parseFile("views/layout.html", "@\\{(content)\\}", layout);
   }
 
+  public static void set(String key, Object value) {
+    settings.put(key, (String) value);
+  }
+
+  public static Object settings(String key) {
+    return settings.get(key);
+  }
+
   public static void main(String[] args) {
 
     setPort(8080);
@@ -58,6 +68,8 @@ public class SparkLearn {
     get(new Route("/") {
       @Override
       public Object handle(Request request, Response response) {
+        set("title", "Spark Learn Application");
+        set("count", String.valueOf(settings.size()));
         return render("views/index.html", settings);
       }
     });
@@ -65,6 +77,8 @@ public class SparkLearn {
     get(new Route("/hello") {
       @Override
       public Object handle(Request request, Response response) {
+        set("title", "Hello World!");
+        set("count", String.valueOf(settings.size()));
         return render("views/index.html", settings);
       }
     });
@@ -72,6 +86,9 @@ public class SparkLearn {
     get(new Route("/about") {
       @Override
       public Object handle(Request request, Response response) {
+        set("title", "About Spark Learn");
+        set("author.name", "Hallison Batista");
+        set("author.email", "hallison.batista@gmail.com");
         return render("views/about.html", settings);
       }
     });
