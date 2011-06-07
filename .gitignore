@@ -1,0 +1,4 @@
+*.sw[p-z]
+.vimsession
+build/*
+vendors/*

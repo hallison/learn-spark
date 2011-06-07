@@ -1,0 +1,8 @@
+Learn - Spark Java Framework
+============================
+
+
+Run:
+
+    . environment && ant && java learn.SparkLearn
+
